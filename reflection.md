@@ -1,6 +1,10 @@
 # PawPal+ Project Reflection
 
 ## 1. System Design
+    3 core actions:
+    1. Add a pet and enter basic info
+    2. Add care tasks to a pet with duration and priority
+    3. Generate and view a prioritised daily schedule with an explanation.
 
 **a. Initial design**
 
