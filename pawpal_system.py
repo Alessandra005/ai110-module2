@@ -1,7 +1,9 @@
 from dataclasses import dataclass, field
+from datetime import date, timedelta
 from typing import Literal
 
 Priority = Literal["low", "medium", "high"]
+Frequency = Literal["once", "daily", "weekly"]
 PRIORITY_RANK = {"high": 3, "medium": 2, "low": 1}
 
 
@@ -12,6 +14,8 @@ class Task:
     priority: Priority = "medium"
     description: str = ""
     completed: bool = False
+    frequency: Frequency = "once"
+    scheduled_time: str = "08:00"  # HH:MM format
 
     def mark_complete(self) -> None:
         self.completed = True
@@ -21,6 +25,23 @@ class Task:
 
     def time_required(self) -> int:
         return self.duration_minutes
+
+    def recur(self) -> "Task | None":
+        if self.frequency == "daily":
+            next_time = date.today() + timedelta(days=1)
+        elif self.frequency == "weekly":
+            next_time = date.today() + timedelta(weeks=1)
+        else:
+            return None
+        new_task = Task(
+            title=self.title,
+            duration_minutes=self.duration_minutes,
+            priority=self.priority,
+            description=f"Recurring from {date.today()} — due {next_time}",
+            frequency=self.frequency,
+            scheduled_time=self.scheduled_time,
+        )
+        return new_task
 
     def __str__(self) -> str:
         status = "done" if self.completed else "pending"
@@ -88,6 +109,34 @@ class Scheduler:
                 self.schedule.append(task)
                 time_used += task.time_required()
         return self.schedule
+
+    def sort_by_time(self) -> list:
+        return sorted(self.schedule, key=lambda t: t.scheduled_time)
+
+    def filter_tasks(self, pet_name: str = None, completed: bool = None) -> list:
+        results = self.owner.get_all_tasks()
+        if completed is not None:
+            results = [t for t in results if t.completed == completed]
+        if pet_name is not None:
+            pet_tasks = set()
+            for pet in self.owner.pets:
+                if pet.name.lower() == pet_name.lower():
+                    pet_tasks.update(id(t) for t in pet.tasks)
+            results = [t for t in results if id(t) in pet_tasks]
+        return results
+
+    def detect_conflicts(self) -> list:
+        seen = {}
+        warnings = []
+        for task in self.schedule:
+            if task.scheduled_time in seen:
+                warnings.append(
+                    f"Conflict at {task.scheduled_time}: "
+                    f"'{seen[task.scheduled_time]}' and '{task.title}' overlap."
+                )
+            else:
+                seen[task.scheduled_time] = task.title
+        return warnings
 
     def filter_by_priority(self, priority: str) -> list:
         if not self.schedule:

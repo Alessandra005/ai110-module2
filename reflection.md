@@ -40,6 +40,7 @@
 
 - Describe one tradeoff your scheduler makes.
 - Why is that tradeoff reasonable for this scenario?
+    The conflict detection only flags tasks with the exact same scheduled_time string. It does not really check whether task durations overlap. It is reasonable though, because this keeps the code easy to understand, and since exact time mistakes are most common, it still catches the main problem without making things complicated.
 
 ---
 
