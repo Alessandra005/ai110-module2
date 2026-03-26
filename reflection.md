@@ -53,11 +53,13 @@
 
 - How did you use AI tools during this project (for example: design brainstorming, debugging, refactoring)?
 - What kinds of prompts or questions were most helpful?
+    I used GitHub Copilot Chat throughout the project. Mostly for design brainstorming like creating the first UML and class outlines, for code review where it helped me find missing links and slow parts in pawpal_system.py, and for test generation where it helped draft pytest tests for edge cases I might have missed. The most helpful way to use it was giving the file with #file so Copilot had the full context before answering.
 
 **b. Judgment and verification**
 
 - Describe one moment where you did not accept an AI suggestion as-is.
 - How did you evaluate or verify what the AI suggested?
+    At the beginning, Copilot suggested adding a pet field inside each Task so the scheduler could show which pet it belonged to. I chose not to do that because it would create a loop where Pets contain Tasks and Tasks point back to Pets, which would make the design messy. So, instead, I handled the display in the UI by looking up the pet name from the owner’s list when showing the schedule. This kept the design simple and avoided unnecessary coupling.
 
 ---
 
@@ -67,11 +69,13 @@
 
 - What behaviors did you test?
 - Why were these tests important?
+    I tested the whole task flow to make sure completed tasks never get rescheduled, daily and weekly repeats create new tasks correctly, and priorities and time limits are handled the right way. I also checked that conflicts are detected only when they should be. These were important because they confirmed that the scheduler behaves predictably and doesn’t create unexpected tasks or ordering mistakes.
 
 **b. Confidence**
 
 - How confident are you that your scheduler works correctly?
 - What edge cases would you test next if you had more time?
+    I’m confident in the scheduler because the most important edge cases are already covered. If I had more time, I would test a task whose duration exactly matches the remaining time budget and also check how recurrence behaves across a month boundary. Right now, I’d put my confidence at about a 4/5.
 
 ---
 
@@ -80,11 +84,15 @@
 **a. What went well**
 
 - What part of this project are you most satisfied with?
+    I’m most happy with how clean the class structure turned out. Keeping Pet as the data holder, Owner as the aggregator, and Scheduler as the consumer made everything easier to reason about and test. Using dataclasses also helped keep Task and Pet simple without a lot of extra code.
 
 **b. What you would improve**
 
 - If you had another iteration, what would you improve or redesign?
+    I would build a proper real time of day scheduling engine so the plan shows an actual timeline instead of just a sorted list. I’d also upgrade conflict detection so it checks for overlapping durations, not just identical start times.
+
 
 **c. Key takeaway**
 
 - What is one important thing you learned about designing systems or working with AI on this project?
+    Designing the UML before writing any code forced me to think through class responsibilities upfront, which really made the final design cleaner, and when working with AI, it is definetely crucial to know when to accept a suggestion and when to push back so the design stays consistent.
