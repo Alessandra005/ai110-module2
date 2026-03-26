@@ -82,12 +82,17 @@ class Scheduler:
         self.schedule = []
         time_used = 0
         for task in self.owner.get_all_tasks():
+            if task.completed:
+                continue
             if time_used + task.time_required() <= self.time_limit:
                 self.schedule.append(task)
                 time_used += task.time_required()
         return self.schedule
 
     def filter_by_priority(self, priority: str) -> list:
+        if not self.schedule:
+            print("Warning: schedule is empty. Build the schedule first.")
+            return []
         return [t for t in self.schedule if t.priority == priority]
 
     def total_time(self) -> int:
@@ -100,7 +105,8 @@ class Scheduler:
         for i, task in enumerate(self.schedule, 1):
             reason = "high priority" if task.is_high_priority() else f"{task.priority} priority"
             lines.append(f"  {i}. {task.title} ({task.duration_minutes} min) — {reason}")
-        skipped = [t for t in self.owner.get_all_tasks() if t not in self.schedule]
+        scheduled_set = set(id(t) for t in self.schedule)
+        skipped = [t for t in self.owner.get_all_tasks() if id(t) not in scheduled_set]
         if skipped:
             lines.append("Skipped (time limit):")
             for t in skipped:
