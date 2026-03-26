@@ -39,6 +39,16 @@ pip install -r requirements.txt
 6. Connect your logic to the Streamlit UI in `app.py`.
 7. Refine UML so it matches what you actually built.
 
+## Features
+
+- Enter basic owner and pet info
+- Add tasks with duration, priority, scheduled time, and frequency
+- Generate a daily schedule based on time budget and priority
+- Display the plan sorted by priority then time, with plain-language reasoning
+- Conflict detection warns when two tasks share the same time slot
+- Recurring tasks (daily/weekly) auto-generate the next occurrence on completion
+- Color-coded priority indicators (🔴 High, 🟡 Medium, 🟢 Low)
+
 ## Smarter Scheduling
 PawPal+ now includes the following algorithmic features:
 - **Sort by time**: Tasks are ordered chronologically by their scheduled time (HH:MM).
@@ -51,3 +61,16 @@ Run the full test suite with:
 ```bash
 python -m pytest -v
 ```
+Tests cover task completion, recurrence logic, priority sorting, time limit enforcement, conflict detection, and chronological ordering.
+
+Confidence level: ☆☆☆☆
+
+## 📸 Demo
+
+<a href="/pawpal_screenshot.png" target="_blank">
+  <img src="/pawpal_screenshot.png" title="PawPal App" width="" alt="PawPal App" class="center-block" />
+</a>
+
+<a href="/improved_pawpal_screenshot.png" target="_blank">
+  <img src="/improved_pawpal_screenshot.png" title="PawPal App (improved UI)" width="" alt="PawPal App improved" class="center-block" />
+</a>
