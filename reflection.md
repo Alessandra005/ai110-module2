@@ -35,6 +35,9 @@
 
 - What constraints does your scheduler consider (for example: time, priority, preferences)?
 - How did you decide which constraints mattered most?
+    Task priority (high/medium/low) and the
+    owner's available time budget (available_minutes). Priority is the primary constraint because missing a high priority task like feeding or medication has a great impact on the pet. Time is the next constraint so the scheduler stops adding tasks
+    once the budget is full.
 
 **b. Tradeoffs**
 
