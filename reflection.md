@@ -20,6 +20,12 @@
 
 - Did your design change during implementation?
 - If yes, describe at least one change and why you made it.
+    After Copilot reviewed the skeleton it flagged 5 issues. I decided to just apply 3 of them.
+
+    Changes made:
+    - Added a `completed` check inside `build_schedule()` so completed tasks are not rescheduled.
+    - Changed `explain_plan()` so the code runs quicker.
+    - Added a guard and warning to `filter_by_priority()`.
 
 ---
 
