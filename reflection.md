@@ -10,6 +10,11 @@
 
 - Briefly describe your initial UML design.
 - What classes did you include, and what responsibilities did you assign to each?
+    There should be 4 classes:
+    - Task: With title, duration, priority, completion status. 
+    - Pet: Stores a pet's profile (name, species, age) and owns a list of Tasks. 
+    - Owner: Represents the human user with a time budget and a list of Pets. Responsible for aggregating all tasks across pets so the Scheduler has a single entry point.
+    - Scheduler: Receives an Owner, walks the combined task list, and builds a daily schedule that fits within the owner's available time.
 
 **b. Design changes**
 
